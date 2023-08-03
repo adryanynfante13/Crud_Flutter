@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'SQLITE',
+        title: 'CRUD SQLITE',
         theme: ThemeData(
-          primarySwatch: Colors.orange,
+          primarySwatch: Colors.blueGrey,
         ),
         home: const HomePage());
   }
@@ -28,11 +28,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // All journals
   List<Map<String, dynamic>> _journals = [];
 
   bool _isLoading = true;
-  // This function is used to fetch all data from the database
   void _refreshJournals() async {
     final data = await SQLHelper.getItems();
     setState(() {
@@ -44,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _refreshJournals(); // Loading the diary when the app starts
+    _refreshJournals();
   }
 
   final TextEditingController _titleController = TextEditingController();
@@ -54,8 +52,6 @@ class _HomePageState extends State<HomePage> {
   // It will also be triggered when you want to update an item
   void _showForm(int? id) async {
     if (id != null) {
-      // id == null -> create new item
-      // id != null -> update an existing item
       final existingJournal =
           _journals.firstWhere((element) => element['id'] == id);
       _titleController.text = existingJournal['title'];
@@ -71,7 +67,6 @@ class _HomePageState extends State<HomePage> {
                 top: 15,
                 left: 15,
                 right: 15,
-                // this will prevent the soft keyboard from covering the text fields
                 bottom: MediaQuery.of(context).viewInsets.bottom + 120,
               ),
               child: Column(
@@ -144,7 +139,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SQL'),
+        title: const Text('CRUD SQL'),
       ),
       body: _isLoading
           ? const Center(
@@ -153,7 +148,7 @@ class _HomePageState extends State<HomePage> {
           : ListView.builder(
               itemCount: _journals.length,
               itemBuilder: (context, index) => Card(
-                color: Colors.orange[200],
+                color: Colors.grey[250],
                 margin: const EdgeInsets.all(15),
                 child: ListTile(
                     title: Text(_journals[index]['title']),
